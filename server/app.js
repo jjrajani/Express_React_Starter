@@ -18,6 +18,7 @@ var USERS = [
   {id: 1, username: "humdrum", password: "humdrum", role: "admin", loggedIn: false},
 ]
 
+// Get a list of users
 let compileUsers = function (req, res, next) {
   let users = USERS.map((user) => {
     return {
@@ -27,12 +28,12 @@ let compileUsers = function (req, res, next) {
   res.body = { users }
   next();
 }
-
 app.get('/api/users', compileUsers, function (req, res) {
   console.log("GET USERS LIST", res.body);
   res.status(200).json(res.body);
 });
 
+// Get a single user
 var authorize = function (req, res, next) {
   console.log("Authorizing: ", req.headers);
   var authed = false;
@@ -62,7 +63,9 @@ app.get('/api/user/:name', authorize, (req, res) => {
   });
 });
 
+// Create a user
 var validate = function (req, res, next) {
+  console.log("REQ", req.body)
   let valid = true;
   USERS.forEach((user) => {
     if (user.username === req.body.username) {
@@ -73,11 +76,20 @@ var validate = function (req, res, next) {
     next();
   } else {
     res.status(422).json("Username already exists");
-  }
 }
-app.post('/api/user', validate, (req, res) => {
-  console.log("POST.res.body", res.body);
-  res.send("User POST request made")
+var addUser = function(req, res, next) {
+  let user = req.body;
+  user.id = USERS.length;
+  user.role = req.body.role ? req.body.role : "user";
+  user.loggedIn = true;
+  USERS.push(user);
+  next();
+}
+app.post('/api/user', validate, addUser, (req, res) => {
+  res.status(200).json({
+    username: req.body.username,
+    loggedIn: true,
+  });
 })
 
 module.exports = app;
