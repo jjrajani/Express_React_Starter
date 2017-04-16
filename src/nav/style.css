@@ -1,0 +1,23 @@
+.nav {
+  margin: 2vh 0 1vh;
+}
+
+.nav > .links { }
+
+.nav > .links > .link {
+  border: solid green 1px;
+  display: inline-block;
+  width: 125px;
+  padding: 1vh 0;
+  margin: 2vh 10vw;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.nav > .links > .link.active {
+  background-color: limegreen;
+}
+
+.nav > .links > .link:hover {
+  background-color: blue;
+}

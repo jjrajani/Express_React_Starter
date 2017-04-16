@@ -1,0 +1,202 @@
+.place.wrapper{
+  padding: 4vh 5%;
+  margin: 2vh auto;
+  border: solid 1px #777;
+  border-radius: 7px;
+  background-color: #FBFBFF;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.place.item-wrapper > .item-header {
+  max-width: 100%;
+}
+.item-header > p {
+    padding: 1vh 0;
+}
+.item-header > .title {
+  width: 49%;
+  display: inline-block;
+  margin-right: 1%;
+  border: solid #777 1px;
+  border-radius: 7px;
+}
+.item-header > .desire {
+  width: 49%;
+  margin-left: 1%;
+  display: inline-block;
+  border: solid #777 1px;
+  border-radius: 7px;
+}
+.item-header > .high {
+  background-color: limegreen;
+}
+.item-header > .mid {
+  background-color: purple;
+}
+.place.item-wrapper > .description {
+
+}
+
+
+.place.item-wrapper > img {
+  border: solid 1px #777;
+  border-radius: 7px;
+  max-width: 100%;
+  margin: 1vh auto;
+}
+
+.place.item-wrapper > .nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.place.item-wrapper > .nav > p {
+  color: #777;
+  padding: 5px 10px;
+  border-radius: 7px;
+  border: solid 1px #777;
+  display: inline-block;
+}
+.place.item-wrapper > .nav > p:hover {
+  color: #ccc;
+  background-color: green;
+  display: inline-block;
+  cursor: pointer;
+}
+.place.item-wrapper > .nav > p.description {
+  color: #111;
+  border: none;
+}
+
+.place.item-wrapper > .nav > p.description:hover {
+  border: none;
+  color: #111;
+  background-color: transparent;
+  cursor: default;
+}
+
+.place.item-wrapper > .edit-form {
+  width: 100%;
+  border: solid green 1px;
+  margin: 30px 0;
+}
+.place.item-wrapper > .edit-form > .input-row {
+  width: 80%;
+  border: solid green 1px;
+  margin: 20px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.place.item-wrapper > .edit-form > .input-row > label {
+  display: inline-block;
+  border: solid green 1px;
+  width: 20%;
+  margin: 0 0 0 2%;
+  font-size: 0.8rem;
+}
+.place.item-wrapper > .edit-form > .input-row > input {
+  margin: 8px auto;
+  width: 75%;
+}
+
+.delete-page > .buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 40%;
+  margin: 2vh auto;
+}
+.delete-page > .buttons > p {
+  /*border: solid green 1px;*/
+  color: #777;
+  padding: 5px 10px;
+  border-radius: 7px;
+  border: solid 1px #777;
+}
+
+.delete-page > .buttons > p:hover {
+  color: #ccc;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.delete-page > .buttons > p.confirm:hover {
+  background-color: green;
+}
+.delete-page > .buttons > p.deny:hover {
+  background-color: red;
+}
+
+.addLink-form-wrapper {
+  border: solid #777 1px;
+  border-radius: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 80%;
+  margin: 7px auto;
+  padding: 10px;
+}
+.addLink-form-wrapper > input {
+  padding:  5px;
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+.addLink-form-wrapper > input[name="title"] {
+  width: 30%;
+  margin-bottom: 10px;
+}
+.addLink-form-wrapper > input[name="link"] {
+  width: 67.5%;
+  margin-left: 2.5%;
+  margin-bottom: 10px;
+}
+.addLink-form-wrapper > .submit {
+  border: solid 1px #777;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  padding: 7px;
+  border-radius: 7px;
+}
+.addLink-form-wrapper > .submit:hover {
+  background-color: blue;
+  color: white;
+  cursor: pointer;
+}
+.links-list > .link > .top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.links-list > .link > .top > p {
+  width: 15%;
+}
+.links-list > .link > .top > a {
+  width: 85%;
+  border: solid #ccc 1px;
+  border-radius: 7px;
+  display: inline-block;
+  text-align: left;
+  text-decoration: none;
+  margin: 3px 0;
+  padding: 3px;
+  font-size: 0.8rem;
+  color: #333;
+}
+.links-list > .link:first-child > .top > a {
+  margin-top: 6px;
+}
+.links-list > .link:last-child > .top > a {
+  margin-bottom: 6px;
+}
+.links-list > .link > .top > a:hover {
+  background-color: red;
+}
+.edit-link, .delete-link {
+  color: red;
+  cursor: pointer;
+}

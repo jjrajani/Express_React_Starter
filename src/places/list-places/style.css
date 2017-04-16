@@ -1,0 +1,63 @@
+.places.list-wrapper{
+  padding: 2vh 0;
+  margin: 0 auto;
+  border: solid 1px #777;
+  border-radius: 7px;
+  background-color: #ddd;
+}
+
+.places.list {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.place.list-item {
+  padding: 2vh 5%;
+  border: solid #777 1px;
+  border-radius: 7px;
+  margin: 2vh 0;
+  background-color: #eee;
+}
+
+.place.list-item:hover {
+  background-color: #FBFBFF;
+  cursor: pointer;
+}
+
+.place.list-item > .item-header {
+  max-width: 100%;
+}
+.item-header > p {
+    padding: 1vh 0;
+}
+.item-header > .title {
+  width: 49%;
+  display: inline-block;
+  margin-right: 1%;
+  border: solid #777 1px;
+  border-radius: 7px;
+}
+.item-header > .desire {
+  width: 49%;
+  margin-left: 1%;
+  display: inline-block;
+  border: solid #777 1px;
+  border-radius: 7px;
+}
+.item-header > .high {
+  background-color: limegreen;
+}
+.item-header > .mid {
+  background-color: purple;
+}
+.place.list-item > .description {
+
+}
+
+
+.place.list-item > img {
+  border: solid 1px #777;
+  border-radius: 7px;
+  max-width: 100%;
+  margin: 1vh auto;
+}

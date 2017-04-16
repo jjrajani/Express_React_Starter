@@ -1,0 +1,26 @@
+.add-place {
+  border: solid green 4px;
+  padding: 30px 0;
+  margin: 30px 0 0;
+  border: solid 1px #777;
+  border-radius: 7px;
+  background-color: #ddd;
+}
+
+.add-place > input {
+  width: 80%;
+  margin: 12px auto;
+  padding: 5px;
+  height: 30px;
+  font-size: 1rem;
+  border: solid 1px #777;
+  border-radius: 7px;
+}
+
+.add-place > input:first-child {
+  margin: 24px auto 12px;
+}
+
+.add-place > input[type="submit"] {
+  background-color: green;
+}
