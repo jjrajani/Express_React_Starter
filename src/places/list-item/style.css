@@ -79,12 +79,12 @@
 
 .place.item-wrapper > .edit-form {
   width: 100%;
-  border: solid green 1px;
   margin: 30px 0;
 }
 .place.item-wrapper > .edit-form > .input-row {
   width: 80%;
-  border: solid green 1px;
+  border: solid #777 1px;
+  border-radius: 7px;
   margin: 20px auto;
   display: flex;
   justify-content: space-between;
@@ -92,14 +92,31 @@
 }
 .place.item-wrapper > .edit-form > .input-row > label {
   display: inline-block;
-  border: solid green 1px;
+  border: solid #999 1px;
+  border-radius: 7px;
   width: 20%;
   margin: 0 0 0 2%;
   font-size: 0.8rem;
 }
 .place.item-wrapper > .edit-form > .input-row > input {
+  border: solid #999 1px;
   margin: 8px auto;
+  border-radius: 3px;
   width: 75%;
+  padding: 3px;
+}
+.place.item-wrapper > .edit-form > input[type="submit"] {
+  padding: 10px 15px;
+  border: solid #333 1px;
+  border-radius: 7px;
+  font-size: 1rem;
+  color: limegreen;
+  background-color: white;
+}
+.place.item-wrapper > .edit-form > input[type="submit"]:hover {
+  color: white;
+  background-color: limegreen;
+  cursor: pointer;
 }
 
 .delete-page > .buttons {
@@ -124,10 +141,10 @@
 }
 
 .delete-page > .buttons > p.confirm:hover {
-  background-color: green;
+  background-color: red;
 }
 .delete-page > .buttons > p.deny:hover {
-  background-color: red;
+  background-color: green;
 }
 
 .addLink-form-wrapper {
