@@ -49,7 +49,7 @@ app.get('/api/places', (req, res) => {
       // console.log("ROWS", rows)
       res.status(200)
          .json(rows.sort((a, b) => {
-           return a.desire > b.desire ? -1 : 1
+           return a.title > b.title ? 1 : -1
          }));
     } else {
       console.log('Error while performing GET Places Query.', err);

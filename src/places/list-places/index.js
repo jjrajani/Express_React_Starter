@@ -28,10 +28,10 @@ class PlacesList extends Component {
           <p className="description">{place.description}</p>
           <img src={place.img} alt=""/>
           <div className="item-header">
-            <p className={place.desire > 7 ? "title high" : place.desire > 5 ? "title mid" : "title"}
+            <p className={place.desire > 8 ? "title high" : place.desire > 5 ? "title mid" : "title"}
               >{place.title}
             </p>
-            <p className={place.desire > 7 ? "high desire" : place.desire > 5 ? "mid desire" : "desire"}
+            <p className={place.desire > 8 ? "high desire" : place.desire > 5 ? "mid desire" : "desire"}
               >Desire: {place.desire}
             </p>
           </div>
