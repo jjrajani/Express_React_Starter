@@ -7,7 +7,20 @@ var PLACES = require("./places");
 var LINKS = require("./links");
 const cors = require('cors');
 var fs = require('fs');
-
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '1989Felix',
+  database : 'travel_locations'
+});
+connection.connect(function(err){
+  if(!err) {
+      console.log("Database is connected ... \n\n");
+  } else {
+      console.log("Error connecting database ... \n\n");
+  }
+});
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -31,53 +44,85 @@ app.get('/:page', (req, res) => {
 
 // Get the list of places
 app.get('/api/places', (req, res) => {
-  res.status(200)
-     .json(PLACES.slice(1, PLACES.length)
-     .sort((a, b) => {
-       return a.desire > b.desire ? -1 : 1
-     }));
+  connection.query('SELECT * from place', function(err, rows, fields) {
+    if (!err) {
+      // console.log("ROWS", rows)
+      res.status(200)
+         .json(rows.sort((a, b) => {
+           return a.desire > b.desire ? -1 : 1
+         }));
+    } else {
+      console.log('Error while performing GET Places Query.', err);
+      res.status(500).json("Something went wrong loading the database");
+    }
+  });
 });
-// Create a place
+// Create a place - returns list of places
 var addPlace = function (req, res, next) {
-  let place = req.body;
-  place.id = PLACES.length;
-  PLACES.push(place);
-  fs.writeFile("/places", PLACES, function (err) {
-    if(err) new Promise(function(resolve, reject) {
-      return console.log(err)
-    });
-    console.log('file was saved')
-  })
-  res.body = place;
-  next();
+  connection.query("SELECT * FROM place", function(err, rows, fields) {
+    if (!err) {
+      req.body.id = rows.length;
+      connection.query("INSERT INTO place SET ?", req.body, function(err, result) {
+        if (!err) {
+          rows.push(req.body);
+          res.status(200)
+             .json(rows.sort((a, b) => {
+               return a.desire > b.desire ? -1 : 1
+             }));
+        } else {
+          console.log('Error while getting adding place.', err);
+          res.status(500).json("Something went wrong adding the place");
+        }
+      });
+    } else {
+      res.status(500).json("Could not get places to add place");
+    }
+  });
+
 }
 app.post('/api/places', addPlace, (req, res) => {
-  res.status(200).json(res.body);
+  // res.sent in addPlace
 });
-// Update a place
+// Update a place - returns upated user
 var updateUser = function(req, res, next) {
-  PLACES[req.body.id] = req.body;
-  res.body = PLACES[req.body.id];
-  next();
+  var placeQuery = "UPDATE place set img =? , title =? , description =? , desire =?, WHERE id =?";
+  connection.query(placeQuery,[
+                      req.body.img,
+                      req.body.title,
+                      req.body.description,
+                      req.body.desire,
+                      req.body.id,
+                    ], function(err, results) {
+                      if(!err) {
+                        console.log("Results", results)
+                        res.status(200).json(req.body).end();
+                      } else {
+                        console.log('There was an error updating the place', err);
+                        res.status(422).json("Place failed to update");
+                      }
+                    });
 }
 app.post('/api/place/:id', updateUser, (req, res) => {
-  res.status(202).json(res.body);
+  // res sent in updateUser;
 });
-// Delete a place
+// Delete a place - returns status message
 var deletePlace = function(req, res, next) {
+  var deleteQuery = "DELETE from place WHERE id = ?";
   let id = req.params.id;
-  PLACES = PLACES.filter((place, i) => {
-    if (+place.id !== +id) {
-      if (place.id > id) {
-        place.id = place.id - 1;
-      }
-      return place;
+  console.log(req.params);
+  connection.query(deleteQuery, id, function(err, result) {
+    if (!err) {
+      console.log("Place deleted", result);
+      res.status(200).json("Place deleted");
+    } else {
+      console.log("There was an error deleting the place", err);
+      res.status(422).json("Place failed to delete");
     }
   });
   next();
 }
 app.delete('/api/place/:id', deletePlace, (req, res) => {
-  res.status(200).json("Delete Successful");
+  // res sent in deletePlace();
 });
 
 // Get the list of a places links
@@ -98,114 +143,26 @@ app.get('/api/place/:id/links', getLinks, (req, res) => {
 
 
 // Add a link
-var addLink = function(req, res, next) {
-  let link = req.body;
-  link.id = LINKS.length;
-  link.placeId = req.params.id;
-  LINKS.push(link);
-  res.body = LINKS;
-  next();
-}
-app.post('/api/place/:id/links', addLink, (req, res) => {
-  res.status(200).json(res.body);
-});
-
-// Update Link
-var updateLink = function(req, res, next) {
-  let id = req.params.linkid;
-  LINKS[id] = link;
-  next();
-}
-app.post('/api/place/:id/link/:linkid', updateLink, getLinks, (req, res) => {
-  res.status(200).json(res.body);
-});
-
-
-
-
-
-// USER ROUTES //
-
-var USERS = [
-  {id: 0, username: "", password: "", role: "", loggedIn: false},
-  {id: 1, username: "humdrum", password: "humdrum", role: "admin", loggedIn: false},
-]
-// Get a List of Users
-let compileUsers = function (req, res, next) {
-  let users = USERS.map((user) => {
-    return {
-      username: user.username
-    }
-  }).slice(1, USERS.length);
-  res.body = { users }
-  next();
-}
-app.get('/api/users', compileUsers, function (req, res) {
-  console.log("PLACES", PLACES);
-  res.status(200).json(res.body);
-});
-
-// Get a Users
-var exists = function (req, res, next) {
-  var index;
-  USERS.forEach((user, i) => {
-    if (user.username.toLowerCase() === req.params.username.toLowerCase()) {
-      index = i;
-    }
-  });
-  if (index) {
-    var user = USERS[index]
-    res.body = { user };
-    next();
-  } else {
-    res.status(422).json("User does not exist");
-  }
-}
-app.get('/api/user/:username', exists, (req, res) => {
-  res.status(200).json({
-    username: res.body.user.username
-  });
-});
-
-// Create a user
-var nonExists = function (req, res, next) {
-  let valid = true;
-  USERS.forEach((user) => {
-    if (user.username === req.body.username) {
-      valid = false;
-    }
-  });
-  if (valid) {
-    next();
-  } else {
-    USERS.forEach((user) => {
-      if (user.password === req.body.password) {
-        res.body = user;
-        res.status(200).json({
-          username: req.body.username,
-          loggedIn: true,
-        });
-      } else {
-        res.status(422).json("Password incorrect");
-      }
-    });
-  }
-}
-var addUser = function(req, res, next) {
-  console.log(req.body)
-  let user = req.body;
-  user.id = USERS.length;
-  user.role = req.body.role ? req.body.role : "user";
-  user.loggedIn = true;
-  USERS.push(user);
-  next();
-}
-app.post('/api/user', nonExists, addUser, (req, res) => {
-  console.log(req.body)
-  res.status(200).json({
-    username: req.body.username,
-    loggedIn: true,
-  });
-})
+// var addLink = function(req, res, next) {
+//   let link = req.body;
+//   link.id = LINKS.length;
+//   link.placeId = req.params.id;
+//   LINKS.push(link);
+//   res.body = LINKS;
+//   next();
+// }
+// app.post('/api/place/:id/links', addLink, (req, res) => {
+//   res.status(200).json(res.body);
+// });
+//
+// // Update Link
+// var updateLink = function(req, res, next) {
+//   let id = req.params.linkid;
+//   LINKS[id] = link;
+//   next();
+// }
+// app.post('/api/place/:id/link/:linkid', updateLink, getLinks, (req, res) => {
+//   res.status(200).json(res.body);
+// });
 
 module.exports = app;

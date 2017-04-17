@@ -19,32 +19,32 @@ class PlaceItem extends Component {
         link: "",
       },
       editPlace: {},
-      editLinks: [],
-      links: [],
+      // editLinks: [],
+      // links: [],
     };
     this._edit = this._edit.bind(this);
     this._askDelete = this._askDelete.bind(this);
     this._confirmDelete = this._confirmDelete.bind(this);
-    this._getLinks(this.props.place.id);
-    this._addLink = this._addLink.bind(this);
+    // this._getLinks(this.props.place.id);
+    // this._addLink = this._addLink.bind(this);
     // this._submitLink = this._submitLink.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     let state = this.state;
     state.place = nextProps.place;
-    this._getLinks(nextProps.place.id);
+    // this._getLinks(nextProps.place.id);
     this.setState(state);
   }
 
   render() {
+    console.log("configrm delete?", this.props.place);
     return (
       <div className="place wrapper">
         {this._staticPage()}
       </div>
     );
   }
-
   _staticPage () {
     let place = this.state.place;
     return (
@@ -65,18 +65,20 @@ class PlaceItem extends Component {
         </div>
         {this.state.show.edit ? this._editPage() : null}
         {this.state.show.delete ? this._deletePage() : null}
-        <div className="links-wrapper">
-          <ul className="links-list">
-            {this._renderLinks()}
-          </ul>
-          <div className="link-form-wrapper">
-            <p onClick={this._addLink}>Add Link</p>
-            {this.state.show.addLink ? this._addLinkForm() : null}
-          </div>
-        </div>
       </div>
     )
   }
+
+// LINKS comonent
+  // <div className="links-wrapper">
+  //   <ul className="links-list">
+  //     {this._renderLinks()}
+  //   </ul>
+  //   <div className="link-form-wrapper">
+  //     <p onClick={this._addLink}>Add Link</p>
+  //     {this.state.show.addLink ? this._addLinkForm() : null}
+  //   </div>
+  // </div>
 
   _editPage() {
     let place = this.state.editPlace;
@@ -187,115 +189,114 @@ class PlaceItem extends Component {
     });
   }
 
-  _getLinks(id) {
-    axios.get(`http://localhost:9000/api/place/${id}/links`).then((res) => {
-      let state = this.state;
-      state.links = res.data;
-      state.editLinks = res.data.map((data) => {
-        data.showEdit = false;
-        return data;
-      });
-      console.log("Links: ", this.state.links);
-      this.setState(state);
-    });
-  }
-  _renderLinks() {
-    return this.state.links.map((link, i) => {
-      return (
-        <div key={i} className="link">
-          <div className="top">
-            <a target="blank" href={link.link}>{link.title}</a>
-            <p className="edit-link" onClick={this._toggleEditLinkForm.bind(this, i)}>E</p>
-            <p
-              className="delete-link"
-              onClick={this._toggleEditLinkForm.bind(this, i)}
-            >D
-            </p>
-          </div>
-          {this._editLinkForm(link, i)}
-        </div>
-      )
-    })
-  }
-  _toggleEditLinkForm(i) {
-    let state = this.state;
-    state.editLinks[i].showEdit = !state.editLinks[i].showEdit;
-    this.setState(state);
-  }
-  _editLinkForm(link, i) {
-    return (
-      <div className={this.state.editLinks[i].showEdit ? "addLink form" : "hidden"}>
-        <div className="input-row">
-          <label>Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            placeholder="Title:"
-            value={link.title}
-            onChange={this._editAddLink.bind(this, "title", i)}
-          />
-        </div>
-        <div className="input-row">
-          <label>Link:</label>
-          <input
-            type="text"
-            id="link"
-            name="link"
-            placeholder="Link:"
-            value={link.link}
-            onChange={this._editAddLink.bind(this, "link", i)}
-          />
-        </div>
-      </div>
-    )
-  }
-  _addLink() {
-    let state = this.state;
-    state.show.addLink = !state.show.addLink;
-    this.setState(state);
-  }
-  _addLinkForm() {
-    return (
-      <form className="addLink-form-wrapper">
-        <input
-          id="title"
-          name="title"
-          placeholder="Title"
-          value={this.state.addLink.title}
-          onChange={this._handleLinkChange.bind(this, "title")}
-          required={true}
-        />
-        <input
-          id="link"
-          name="link"
-          placeholder="Link"
-          value={this.state.addLink.link}
-          onChange={this._handleLinkChange.bind(this, "link")}
-          required={true}
-        />
-        <p className="submit" onClick={this._submitLink.bind(this)}>Add Link</p>
-      </form>
-    )
-  }
-  _handleLinkChange(key, e) {
-    let state = this.state;
-    state.addLink[key] = e.target.value;
-    this.setState(state);
-  }
-  _submitLink(e) {
-    e.preventDefault();
-    axios.post(`http://localhost:9000/api/place/${this.props.place.id}/links`, this.state.addLink).then((res) => {
-      let state = this.state;
-      state.links = res.data;
-      this.setState(state);
-    });
-  }
-  _editAddLink(key, i, e) {
-    let state = this.state;
-    state.editLinks[i][key] = e.target.value;
-    this.setState(state);
-  }
+  // _getLinks(id) {
+  //   axios.get(`http://localhost:9000/api/place/${id}/links`).then((res) => {
+  //     let state = this.state;
+  //     state.links = res.data;
+  //     state.editLinks = res.data.map((data) => {
+  //       data.showEdit = false;
+  //       return data;
+  //     });
+  //     this.setState(state);
+  //   });
+  // }
+  // _renderLinks() {
+  //   return this.state.links.map((link, i) => {
+  //     return (
+  //       <div key={i} className="link">
+  //         <div className="top">
+  //           <a target="blank" href={link.link}>{link.title}</a>
+  //           <p className="edit-link" onClick={this._toggleEditLinkForm.bind(this, i)}>E</p>
+  //           <p
+  //             className="delete-link"
+  //             onClick={this._toggleEditLinkForm.bind(this, i)}
+  //           >D
+  //           </p>
+  //         </div>
+  //         {this._editLinkForm(link, i)}
+  //       </div>
+  //     )
+  //   })
+  // }
+  // _toggleEditLinkForm(i) {
+  //   let state = this.state;
+  //   state.editLinks[i].showEdit = !state.editLinks[i].showEdit;
+  //   this.setState(state);
+  // }
+  // _editLinkForm(link, i) {
+  //   return (
+  //     <div className={this.state.editLinks[i].showEdit ? "addLink form" : "hidden"}>
+  //       <div className="input-row">
+  //         <label>Title:</label>
+  //         <input
+  //           type="text"
+  //           id="title"
+  //           name="title"
+  //           placeholder="Title:"
+  //           value={link.title}
+  //           onChange={this._editAddLink.bind(this, "title", i)}
+  //         />
+  //       </div>
+  //       <div className="input-row">
+  //         <label>Link:</label>
+  //         <input
+  //           type="text"
+  //           id="link"
+  //           name="link"
+  //           placeholder="Link:"
+  //           value={link.link}
+  //           onChange={this._editAddLink.bind(this, "link", i)}
+  //         />
+  //       </div>
+  //     </div>
+  //   )
+  // }
+  // _addLink() {
+  //   let state = this.state;
+  //   state.show.addLink = !state.show.addLink;
+  //   this.setState(state);
+  // }
+  // _addLinkForm() {
+  //   return (
+  //     <form className="addLink-form-wrapper">
+  //       <input
+  //         id="title"
+  //         name="title"
+  //         placeholder="Title"
+  //         value={this.state.addLink.title}
+  //         onChange={this._handleLinkChange.bind(this, "title")}
+  //         required={true}
+  //       />
+  //       <input
+  //         id="link"
+  //         name="link"
+  //         placeholder="Link"
+  //         value={this.state.addLink.link}
+  //         onChange={this._handleLinkChange.bind(this, "link")}
+  //         required={true}
+  //       />
+  //       <p className="submit" onClick={this._submitLink.bind(this)}>Add Link</p>
+  //     </form>
+  //   )
+  // }
+  // _handleLinkChange(key, e) {
+  //   let state = this.state;
+  //   state.addLink[key] = e.target.value;
+  //   this.setState(state);
+  // }
+  // _submitLink(e) {
+  //   e.preventDefault();
+  //   axios.post(`http://localhost:9000/api/place/${this.props.place.id}/links`, this.state.addLink).then((res) => {
+  //     let state = this.state;
+  //     state.links = res.data;
+  //     this.setState(state);
+  //   });
+  // }
+  // _editAddLink(key, i, e) {
+  //   let state = this.state;
+  //   state.editLinks[i][key] = e.target.value;
+  //   this.setState(state);
+  // }
 }
 
 export default PlaceItem;
